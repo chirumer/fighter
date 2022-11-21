@@ -4,9 +4,13 @@ const path = require('path')
 const app = express();
 
 
+
+
+
 app.get("/", (req, res) => {
   res.redirect('/home')
 });
+
 
 app.use(express.static('public'))
 
