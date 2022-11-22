@@ -27,3 +27,7 @@
   margin-right: 16px;
   /* border-color: white; */
 }
+
+html, body {
+  height: 100%;
+}
