@@ -1,0 +1,28 @@
+#site_navbar-logo {
+  width: 70px;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding: 0px;
+  background-color: white;
+}
+
+#site_navbar-info {
+  margin: 0px;
+  width: fit-content;
+}
+
+#site_navbar-nav {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+#site_nav-toggler {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+#logout-btn {
+  margin-left: 16px;
+  margin-right: 16px;
+  /* border-color: white; */
+}
