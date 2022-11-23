@@ -9,20 +9,23 @@ const app = express();
 
 
 
-
-
-app.get("/", (req, res) => {
-  res.redirect('/home')
-});
-
 if (Date.now() < event_start){
   app.use(express.static('pre-event_public'));
+  app.get("/", (req, res) => {
+    res.redirect('/home')
+  });
 }
 else if (Date.now() > event_end) {
   app.use(express.static('post-event_public'));
+  app.get("/", (req, res) => {
+    res.redirect('/leaderboard')
+  });
 }
 else {
   app.use(express.static('public'));
+  app.get("/", (req, res) => {
+    res.redirect('/home')
+  });
 }
 
 
