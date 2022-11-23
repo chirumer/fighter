@@ -46,6 +46,16 @@ app.use ((req, res, next) => {
 });
 
 
+app.get('/data/event_start', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify({ event_start }));
+});
+
+app.get('/data/event_end', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify({ event_end }));
+});
+
 
 app.listen(process.env.PORT, () => {
   console.log('Listening on port ' + process.env.PORT);
