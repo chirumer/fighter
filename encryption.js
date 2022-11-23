@@ -1,4 +1,4 @@
-const crypto = require('crypto')
+const crypto = require('crypto');
 
 exports.encrypt = (text) => {
   const algorithm = 'aes-256-ctr';
@@ -9,7 +9,7 @@ exports.encrypt = (text) => {
   let encrypted = cipher.update(text);
   encrypted = Buffer.concat([encrypted, cipher.final()]);
   return iv.toString('hex') + ':' + encrypted.toString('hex');
-}
+};
 
 exports.decrypt = (text) => {
   const algorithm = 'aes-256-ctr';
@@ -21,4 +21,8 @@ exports.decrypt = (text) => {
   let decrypted = decipher.update(encryptedText);
   decrypted = Buffer.concat([decrypted, decipher.final()]);
   return decrypted.toString();
-}
+};
+
+exports.valid_access_code = (email, access_code) => {
+  return false;
+};

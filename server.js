@@ -1,13 +1,40 @@
 const express = require('express');
+const cookie_parser = require('cookie-parser');
 const path = require('path');
 const axios = require('axios');
-const { encrypt, decrypt } = require('./encryption');
+const { encrypt, decrypt, valid_access_code } = require('./encryption');
 
+// load env
 require('dotenv').config()
 
+// express app
 const app = express();
 
 
+// resources: not part of event; available at all times
+app.use(express.static('public'))
+
+
+// user authentication
+app.use(cookie_parser());
+app.use((req, res, next) => {
+
+  const credentials_str = req.cookies['credentials'];
+
+  if (credentials_str) {
+    // verify credentials
+    const credentials = JSON.parse(credentials_str);
+    if (valid_access_code(credentials.email, credentials.access_code)) {
+      next();
+    }
+  }
+
+  // send to login page
+  res.redirect('/login')
+});
+
+
+// site settings related
 let event_start;
 let event_end;
 let participants;
@@ -34,10 +61,11 @@ app.get('/refresh-site-settings', async (req, res) => {
 });
 
 
-app.use ((req, res, next) => {
+// event pages
+app.use((req, res, next) => {
 
   const pre_event_pub = 'pre-event_public'
-  const event_pub = 'public'
+  const event_pub = 'event_public'
   const post_event_pub = 'post-event_public'
 
   const time_now = Date.now();
@@ -68,17 +96,18 @@ app.use ((req, res, next) => {
 });
 
 
+// some data routes
 app.get('/data/event_start', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({ event_start }));
 });
-
 app.get('/data/event_end', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({ event_end }));
 });
 
 
+// start server
 app.listen(process.env.PORT, () => {
   console.log('Listening on port ' + process.env.PORT);
 });
