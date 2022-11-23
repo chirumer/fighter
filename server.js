@@ -43,28 +43,6 @@ app.use ((req, res, next) => {
   middleware(req, res, next);
 });
 
-// app.get('/', function(req, res) {
-//   res.sendFile(path.join(public, 'index.html'));
-// });
-
-// if (Date.now() < event_start){
-//   app.use(express.static('pre-event_public'));
-//   app.get("/", (req, res) => {
-//     res.redirect('/home')
-//   });
-// }
-// else if (Date.now() > event_end) {
-//   app.use(express.static('post-event_public'));
-//   app.get("/", (req, res) => {
-//     res.redirect('/leaderboard')
-//   });
-// }
-// else {
-//   app.use(express.static('public'));
-//   app.get("/", (req, res) => {
-//     res.redirect('/home')
-//   });
-// }
 
 
 app.listen(settings.PORT, () => {
