@@ -1,6 +1,0 @@
-1) implement event countdown
-2) popup for access code
-3) add 'Success' text under Download Guildlines button
-
-extra:
-(1) make navbar info (logo, email, logout) collapsible
