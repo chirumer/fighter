@@ -23,8 +23,6 @@ app.use(cookie_parser());
 
 app.post('/authenticate', (req, res) => {
   const data = req.body;
-  
-  console.log(data);
 
   res.setHeader('Content-Type', 'application/json');
 
@@ -38,8 +36,15 @@ app.post('/authenticate', (req, res) => {
     return
   }
 
+  // set cookie
+  res.cookie('credentials', JSON.stringify(data), { maxAge: 900000, httpOnly: true });
+
   res.end(JSON.stringify({ success: true }));
 });
+app.post('/logout', (req, res) => {
+  res.clearCookie('credentials');
+  res.sendStatus(200);
+})
 app.use((req, res, next) => {
 
   // authentication required only if event is active

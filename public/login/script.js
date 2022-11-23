@@ -5,6 +5,7 @@ $('#login-form').submit(async (event) => {
   const access_code = $('#access_code').val().toLowerCase();
 
   const send_data = { email, access_code };
+  console.log(send_data);
   const response = await fetch('/authenticate', {
     method: 'POST',
     headers: {

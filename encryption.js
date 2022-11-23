@@ -25,10 +25,13 @@ exports.decrypt = (text) => {
   return decrypted.toString();
 };
 
+function access_code(email) {
+  const hash = crypto.createHash('md5').update(email + process.env.ENCRYPTION_KEY).digest('hex').toLowerCase();
+  return hash.substring(0, 9)
+};
+
+exports.access_code = access_code;
+
 exports.valid_access_code = (email, user_code) => {
-  function access_code(email) {
-    const hash = crypto.createHash('md5').update(email + process.env.ENCRYPTION_KEY).digest('hex').toLowerCase();
-    return hash.substring(0, 9)
-  }
-  return user_code == access_code(email);
+  return user_code == exports.access_code(email);
 };
