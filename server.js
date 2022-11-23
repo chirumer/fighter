@@ -89,13 +89,13 @@ function update_settings(settings) {
 
 update_settings(require('./site_settings.json'));
 
-app.get('/refresh-site-settings', async (req, res) => {
-  // add auth to this route
+// app.get('/refresh-site-settings', async (req, res) => {
+//   // add auth to this route
 
-  const request = await axios.get(process.env.SITE_SETTINGS_URL);
-  update_settings(request.data)
-  res.sendStatus(200);
-});
+//   const request = await axios.get(process.env.SITE_SETTINGS_URL);
+//   update_settings(request.data)
+//   res.sendStatus(200);
+// });
 
 
 // event pages

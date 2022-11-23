@@ -32,8 +32,6 @@ function countdown_display(seconds) {
 
 function update_countdown() {
   seconds_left = (new Date(event_start) - Date.now())/1000;
-  console.log(seconds_left);
-  console.log(countdown_display(seconds_left));
   $('#countdown').text(countdown_display(seconds_left));
 }
 
