@@ -1,0 +1,2 @@
+1) implement event countdown
+2) add 'Success' text under Download Guildlines button
