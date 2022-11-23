@@ -19,6 +19,13 @@ app.use(express.static('public'))
 app.use(cookie_parser());
 app.use((req, res, next) => {
 
+  // authentication required only if event is active
+  const time_now = Date.now();
+  if (time_now < event_start || time_now > event_end) {
+    next();
+    return;
+  }
+
   const credentials_str = req.cookies['credentials'];
 
   if (credentials_str) {
@@ -26,6 +33,7 @@ app.use((req, res, next) => {
     const credentials = JSON.parse(credentials_str);
     if (valid_access_code(credentials.email, credentials.access_code)) {
       next();
+      return;
     }
   }
 
