@@ -5,6 +5,8 @@ const settings = require('./site_settings.json')
 const event_start = new Date(settings.event_start)
 const event_end = new Date(settings.event_end)
 
+require('dotenv').config()
+
 const app = express();
 
 
@@ -45,6 +47,6 @@ app.use ((req, res, next) => {
 
 
 
-app.listen(settings.PORT, () => {
-  console.log('Listening on port ' + settings.PORT);
+app.listen(process.env.PORT, () => {
+  console.log('Listening on port ' + process.env.PORT);
 });
