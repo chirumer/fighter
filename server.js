@@ -1,15 +1,37 @@
-const express = require('express')
-const path = require('path')
-
-const settings = require('./site_settings.json')
-const event_start = new Date(settings.event_start)
-const event_end = new Date(settings.event_end)
+const express = require('express');
+const path = require('path');
+const axios = require('axios');
+const { encrypt, decrypt } = require('./encryption');
 
 require('dotenv').config()
 
 const app = express();
 
 
+let event_start;
+let event_end;
+let participants;
+
+function update_settings(settings) {
+
+  function get_participants(encrypted_participants) {
+    return encrypted_participants.map(x => decrypt(x));
+  }
+
+  event_start = new Date(settings.event_start);
+  event_end = new Date(settings.event_end);
+  participants = get_participants(settings.participants);
+}
+
+update_settings(require('./site_settings.json'));
+
+app.get('/refresh-site-settings', async (req, res) => {
+  // add auth to this route
+
+  const request = await axios.get(process.env.SITE_SETTINGS_URL);
+  update_settings(request.data)
+  res.sendStatus(200);
+});
 
 
 app.use ((req, res, next) => {
