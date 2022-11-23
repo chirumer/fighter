@@ -18,8 +18,9 @@ app.use(express.json());
 app.use(express.static('public'))
 
 
-// user authentication
+// user authentication stuff
 app.use(cookie_parser());
+
 app.post('/authenticate', (req, res) => {
   const data = req.body;
   

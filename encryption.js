@@ -1,5 +1,7 @@
 const crypto = require('crypto');
 
+require('dotenv').config()
+
 exports.encrypt = (text) => {
   const algorithm = 'aes-256-ctr';
   const IV_LENGTH = 16;
@@ -23,6 +25,10 @@ exports.decrypt = (text) => {
   return decrypted.toString();
 };
 
-exports.valid_access_code = (email, access_code) => {
-  return false;
+exports.valid_access_code = (email, user_code) => {
+  function access_code(email) {
+    const hash = crypto.createHash('md5').update(email + process.env.ENCRYPTION_KEY).digest('hex').toLowerCase();
+    return hash.substring(0, 9)
+  }
+  return user_code == access_code(email);
 };
