@@ -10,6 +10,9 @@ require('dotenv').config()
 // express app
 const app = express();
 
+// parse json data
+app.use(express.json());
+
 
 // resources: not part of event; available at all times
 app.use(express.static('public'))
@@ -17,6 +20,25 @@ app.use(express.static('public'))
 
 // user authentication
 app.use(cookie_parser());
+app.post('/authenticate', (req, res) => {
+  const data = req.body;
+  
+  console.log(data);
+
+  res.setHeader('Content-Type', 'application/json');
+
+  if (!participants_set.has(data.email)) {
+    res.end(JSON.stringify({ success: false, error_msg: '(email is not registered)' }));
+    return
+  }
+  
+  if (!valid_access_code(data.email, data.access_code)) {
+    res.end(JSON.stringify({ success: false, error_msg: '(wrong access code)' }));
+    return
+  }
+
+  res.end(JSON.stringify({ success: true }));
+});
 app.use((req, res, next) => {
 
   // authentication required only if event is active
@@ -26,10 +48,9 @@ app.use((req, res, next) => {
     return;
   }
 
+  // verify credentials if present
   const credentials_str = req.cookies['credentials'];
-
   if (credentials_str) {
-    // verify credentials
     const credentials = JSON.parse(credentials_str);
     if (valid_access_code(credentials.email, credentials.access_code)) {
       next();
@@ -37,7 +58,7 @@ app.use((req, res, next) => {
     }
   }
 
-  // send to login page
+  // no identity; send to login page
   res.redirect('/login')
 });
 
@@ -46,6 +67,7 @@ app.use((req, res, next) => {
 let event_start;
 let event_end;
 let participants;
+let participants_set
 
 function update_settings(settings) {
 
@@ -56,6 +78,7 @@ function update_settings(settings) {
   event_start = new Date(settings.event_start);
   event_end = new Date(settings.event_end);
   participants = get_participants(settings.participants);
+  participants_set = new Set(participants);
 }
 
 update_settings(require('./site_settings.json'));
