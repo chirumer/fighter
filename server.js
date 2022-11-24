@@ -37,7 +37,7 @@ app.post('/authenticate', (req, res) => {
   }
 
   // set cookie
-  res.cookie('credentials', JSON.stringify(data), { maxAge: 900000, httpOnly: true });
+  res.cookie('credentials', JSON.stringify(data), { maxAge: 3 * 24 * 3600000, httpOnly: true });
 
   res.end(JSON.stringify({ success: true }));
 });
