@@ -1,5 +1,12 @@
 {
-  "event_start": "Fri Nov 25 2022 17:00:00 GMT+0530 (India Standard Time)",
+  "event_start": "Wed Nov 23 2022 17:00:00 GMT+0530 (India Standard Time)",
   "event_end": "Sat Nov 26 2022 17:00:00 GMT+0530 (India Standard Time)",
-  "participants": []
+  "participants": [
+    "e162fdebcf6fea72634e222f46fa616d:9d43f2b490a99713ae47b0bcdaab846107b3616618025d",
+    "41e11f82eff335d3b5e5f6ef680fd70e:332063e233d67b3b4b089032f2b6ca06e61c7fa44dde"
+  ],
+  "admins": [
+    "e162fdebcf6fea72634e222f46fa616d:9d43f2b490a99713ae47b0bcdaab846107b3616618025d",
+    "41e11f82eff335d3b5e5f6ef680fd70e:332063e233d67b3b4b089032f2b6ca06e61c7fa44dde"
+  ]
 }
