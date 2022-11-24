@@ -12,21 +12,34 @@ $('#logout-btn').click(async () => {
 
 $('#upload-form').submit(async function(e){
   e.preventDefault();
-  // const language = $('#language_select').val();
-  // const submission_file = $('#submission_file')[0].files[0];
+  
+  if($("#submission_file")[0].files.length == 0 ){
+    alert("no file selected");
+    return;
+  }
 
-  // const send_data = new FormData();
-  // send_data.append('language', language);
-  // send_data.append('submission_file', submission_file);
+  const form_data = new FormData($('#upload-form')[0]);
+  form_data.append('upload-time', (new Date()).toLocaleTimeString());
+  form_data.append('file-name', form_data.get('code_submission').name)
+
+
+  $('#upload-status').text('uploading..');
+  $('#uploaded-file-time').text('');
+  $('#uploaded-file-language').text('');
+  $('#uploaded-file-name').text('');
 
   const response = await fetch('/submit_code', {
     method: 'POST',
-    body: new FormData($('#upload-form')[0]),
+    body: form_data,
   });
 
   const data = await response.json();
-  console.log(data);
-  alert('i');
+
+  $('#uploaded-file-time').text(form_data.get('upload-time'));
+  $('#uploaded-file-language').text(form_data.get('language'));
+  $('#uploaded-file-name').prop("href", data.public_url);
+  $('#uploaded-file-name').text(form_data.get('file-name'));
+  $('#upload-status').text('Done');
 });
 
 let user_email;

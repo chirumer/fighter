@@ -35,3 +35,7 @@ exports.access_code = access_code;
 exports.valid_access_code = (email, user_code) => {
   return user_code == exports.access_code(email);
 };
+
+exports.generate_uid = () => {
+  return crypto.randomBytes(64).toString('hex').length;
+}

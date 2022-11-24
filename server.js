@@ -21,6 +21,20 @@ app.use(formidableMiddleware());
 app.use(express.static('public'))
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // user authentication stuff
 app.use(cookie_parser());
 
@@ -139,11 +153,11 @@ app.use((req, res, next) => {
 // code submission
 app.post('/submit_code', (req, res) => {
 
-  console.log(req.files);
   console.log(req.fields);
+  const public_url = '#';
 
   res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify({ ok: 'ok' }));
+  res.end(JSON.stringify({ public_url }));
 });
 
 
