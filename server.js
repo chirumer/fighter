@@ -4,6 +4,9 @@ const formidableMiddleware = require('express-formidable');
 const path = require('path');
 const axios = require('axios');
 const { encrypt, decrypt, valid_access_code } = require('./encryption');
+const { BlobServiceClient } = require("@azure/storage-blob");
+const { v1: uuidv1 } = require("uuid");
+const { readFileSync } = require('fs');
 
 // load env
 require('dotenv').config()
@@ -22,17 +25,22 @@ app.use(express.static('public'))
 
 
 
+const AZURE_STORAGE_CONNECTION_STRING = 
+  process.env.AZURE_STORAGE_CONNECTION_STRING;
 
+if (!AZURE_STORAGE_CONNECTION_STRING) {
+  throw Error('Azure Storage Connection string not found');
+}
 
+let containerClient;
 
-
-
-
-
-
-
-
-
+async function main() {
+  const blobServiceClient = BlobServiceClient.fromConnectionString(
+    AZURE_STORAGE_CONNECTION_STRING
+  );
+  containerClient = await blobServiceClient.getContainerClient('code');
+}
+main();
 
 
 // user authentication stuff
@@ -151,10 +159,14 @@ app.use((req, res, next) => {
 
 
 // code submission
-app.post('/submit_code', (req, res) => {
+app.post('/submit_code', async (req, res) => {
 
-  console.log(req.fields);
-  const public_url = '#';
+  const blobName = uuidv1() + '.txt';
+  blockBlobClient = containerClient.getBlockBlobClient(blobName);
+  const submission_data = readFileSync(req.files.code_submission.path);
+  blockBlobClient.upload(submission_data, submission_data.length);
+
+  const public_url = blockBlobClient.url;
 
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({ public_url }));

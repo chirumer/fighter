@@ -20,7 +20,6 @@ $('#upload-form').submit(async function(e){
 
   const form_data = new FormData($('#upload-form')[0]);
   form_data.append('upload-time', (new Date()).toLocaleTimeString());
-  form_data.append('file-name', form_data.get('code_submission').name)
 
 
   $('#upload-status').text('uploading..');
@@ -38,7 +37,7 @@ $('#upload-form').submit(async function(e){
   $('#uploaded-file-time').text(form_data.get('upload-time'));
   $('#uploaded-file-language').text(form_data.get('language'));
   $('#uploaded-file-name').prop("href", data.public_url);
-  $('#uploaded-file-name').text(form_data.get('file-name'));
+  $('#uploaded-file-name').text(form_data.get('code_submission').name);
   $('#upload-status').text('Done');
 });
 
