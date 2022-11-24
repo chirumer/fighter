@@ -78,6 +78,7 @@ let participants_set
 function update_settings(settings) {
 
   function get_participants(encrypted_participants) {
+    console.log('debug: ', x);
     return encrypted_participants.map(x => decrypt(x));
   }
 
