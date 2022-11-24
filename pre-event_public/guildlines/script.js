@@ -9,3 +9,11 @@ $('#logout-btn').click(async () => {
     window.location.replace('/');
   }
 });
+
+let user_email;
+async function main() {
+  const response = await fetch('/data/username');
+  user_email = (await response.json()).email;
+  $('#navbar-user_email').text(user_email);
+}
+main();

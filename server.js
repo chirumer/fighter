@@ -142,6 +142,19 @@ app.get('/data/event_end', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({ event_end }));
 });
+app.get('/data/username', (req, res) => {
+  let email = 'Error';
+  // verify credentials if present
+  const credentials_str = req.cookies['credentials'];
+  if (credentials_str) {
+    const credentials = JSON.parse(credentials_str);
+    if (valid_access_code(credentials.email, credentials.access_code)) {
+      email = credentials.email;
+    }
+  }
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify({ email }));
+});
 
 
 // start server
