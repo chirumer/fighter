@@ -1,5 +1,6 @@
 const express = require('express');
 const cookie_parser = require('cookie-parser');
+const formidableMiddleware = require('express-formidable');
 const path = require('path');
 const axios = require('axios');
 const { encrypt, decrypt, valid_access_code } = require('./encryption');
@@ -10,9 +11,11 @@ require('dotenv').config()
 // express app
 const app = express();
 
-// parse json data
+// parse json & url-encoded data
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
+// parse form data
+app.use(formidableMiddleware());
 
 // resources: not part of event; available at all times
 app.use(express.static('public'))
@@ -130,6 +133,17 @@ app.use((req, res, next) => {
 
   const middleware = express.static(path.join (__dirname, public_dir));
   middleware(req, res, next);
+});
+
+
+// code submission
+app.post('/submit_code', (req, res) => {
+
+  console.log(req.files);
+  console.log(req.fields);
+
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify({ ok: 'ok' }));
 });
 
 
