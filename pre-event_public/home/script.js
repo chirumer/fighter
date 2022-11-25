@@ -45,11 +45,3 @@ async function main() {
 
 let event_start;
 main()
-
-let user_email;
-async function update_email() {
-  const response = await fetch('/data/username');
-  user_email = (await response.json()).email;
-  $('#navbar-user_email').text(user_email);
-}
-update_email();
