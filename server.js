@@ -195,6 +195,11 @@ app.post('/submit_code', async (req, res) => {
 
   const email = JSON.parse(req.cookies['credentials']).email;
 
+  const upload_time = req.fields['upload_time'];
+  const file_name = req.fields['file_name'];
+  const language = req.fields['language'];
+  const db_data = { upload_time, file_name, language, public_url };
+  console.log(db_data);
 
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({ public_url }));
@@ -223,16 +228,32 @@ app.get('/data/username', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({ email }));
 });
-app.get('/data/uploaded-file/tic-tac-toe', (req, res) => {
+app.get('/data/uploaded-file/:game_name', async (req, res) => {
+
+  const game_name = req.params.game_name;
 
   const email = JSON.parse(req.cookies['credentials']).email;
+  const data = await Submission.findOne({ _id: email }).exec();
 
-  upload_time = '';
-  file_name = '';
-  language = '';
+  console.log('data', data);
+  console.log(game_name);
+  
+  if (!data[game_name].length) {
+    upload_time = '';
+    file_name = 'Not Uploaded Yet';
+    language = '';
+    public_url = '#';
+  }
+  else {
+    const [file_info] = data[game_name].slice(-1);
+    upload_time = file_info.upload_time;
+    file_name = file_info.file_name;
+    language = file_info.language;
+    public_url = file_info.public_url;
+  }
 
   res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify({ upload_time, file_name, language }));
+  res.end(JSON.stringify({ upload_time, file_name, language, public_url }));
 });
 
 

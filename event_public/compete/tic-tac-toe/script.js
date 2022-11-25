@@ -19,7 +19,9 @@ $('#upload-form').submit(async function(e){
   }
 
   const form_data = new FormData($('#upload-form')[0]);
-  form_data.append('upload-time', (new Date()).toLocaleTimeString());
+  form_data.append('upload_time', (new Date()).toLocaleTimeString());
+  form_data.append('file_name', form_data.get('code_submission').name);
+  form_data.append('game_name', 'tic_tac_toe');
 
 
   $('#upload-status').text('uploading..');
@@ -34,7 +36,7 @@ $('#upload-form').submit(async function(e){
 
   const data = await response.json();
 
-  $('#uploaded-file-time').text(form_data.get('upload-time'));
+  $('#uploaded-file-time').text(form_data.get('upload_time'));
   $('#uploaded-file-language').text(form_data.get('language'));
   $('#uploaded-file-name').prop("href", data.public_url);
   $('#uploaded-file-name').text(form_data.get('code_submission').name);
@@ -50,11 +52,12 @@ async function main() {
 main();
 
 async function update_uploaded_file() {
-  const response = await fetch('/data/uploaded-file/tic-tac-toe')
-  const { upload_time, language, file_name } = await response.json();
+  const response = await fetch('/data/uploaded-file/tic_tac_toe')
+  const { upload_time, language, file_name, public_url } = await response.json();
 
   $('#uploaded-file-time').text(upload_time);
   $('#uploaded-file-language').text(language);
   $('#uploaded-file-name').text(file_name);
+  $('#uploaded-file-name').prop("href", public_url);
 }
 update_uploaded_file();

@@ -65,11 +65,11 @@
             <div class="flex-grow-1 d-flex justify-content-center align-items-center">
               
               <div>
-                <div>Uploaded File: <a href="#">solution.js</a></div>
-                <div>Time Uploaded: 5:00 pm</div>
-                <div>Language: Python</div>
+                <div>Uploaded File: <a id="uploaded-file-name" href="#"></a></div>
+                <div>Time Uploaded: <span id="uploaded-file-time"></span></div>
+                <div>Language: <span id="uploaded-file-language"></span></div>
                 <br>
-                <div>Upload Status: Done</div>
+                <div>Upload Status: <span id="upload-status"></span></div>
                 <br>
                 <div>Compilation Status: Disabled</div>
                 <div>Judging Status: Disabled</div>
@@ -81,7 +81,7 @@
         </div>
 
         <div style="height:25%;">
-          <div class="d-flex flex-column" style="box-sizing:border-box;width:100%;height:100%;background-color:gainsboro;border-radius:10px;border-width:thick;border:solid;border-color:gray;">
+          <form id="upload-form" class="d-flex flex-column" style="box-sizing:border-box;width:100%;height:100%;background-color:gainsboro;border-radius:10px;border-width:thick;border:solid;border-color:gray;">
   
 
             <div class="mt-2 d-flex justify-content-center align-items-center">
@@ -89,7 +89,7 @@
             </div>
 
             <div class="text-center">
-              <input style="padding-left: 120px;margin-top: 10px;" type="file" id="file" aria-label="File select">
+              <input name="code_submission" style="padding-left: 120px;margin-top: 10px;" type="file" id="submission_file" aria-label="File select">
             </div>
 
 
@@ -101,21 +101,21 @@
                   </div>
     
                   <div>
-                    <select class="form-select" aria-label="Language Select">
-                      <option selected>Python</option>
-                      <option value="1">C++</option>
-                      <option value="2">C</option>
-                      <option value="3">Java</option>
-                      <option value="4">C#</option>
+                    <select name="language" id="language_select" class="form-select" aria-label="Language Select">
+                      <option value="Python" selected>Python</option>
+                      <option value="C++">C++</option>
+                      <option value="C">C</option>
+                      <option value="Java">Java</option>
+                      <option value="C#">C#</option>
                     </select>
                   </div>
     
                 </div>
                   
-                <button type="button" class="btn btn-lg btn-primary">Upload</button>
-            </div>
+                <button type="submit" class="btn btn-lg btn-primary">Upload</button>
+              </div>
 
-          </div>
+            </form>
 
 
         </div>
