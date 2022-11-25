@@ -48,3 +48,13 @@ async function main() {
   $('#navbar-user_email').text(user_email);
 }
 main();
+
+async function update_uploaded_file() {
+  const response = await fetch('/data/uploaded-file/tic-tac-toe')
+  const { upload_time, language, file_name } = await response.json();
+
+  $('#uploaded-file-time').text(upload_time);
+  $('#uploaded-file-language').text(language);
+  $('#uploaded-file-name').text(file_name);
+}
+update_uploaded_file();

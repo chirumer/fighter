@@ -7,6 +7,7 @@ const { encrypt, decrypt, valid_access_code } = require('./encryption');
 const { BlobServiceClient } = require("@azure/storage-blob");
 const { v1: uuidv1 } = require("uuid");
 const { readFileSync } = require('fs');
+const mongoose = require('mongoose');
 
 // load env
 require('dotenv').config()
@@ -24,23 +25,40 @@ app.use(formidableMiddleware());
 app.use(express.static('public'))
 
 
-
-const AZURE_STORAGE_CONNECTION_STRING = 
-  process.env.AZURE_STORAGE_CONNECTION_STRING;
-
-if (!AZURE_STORAGE_CONNECTION_STRING) {
-  throw Error('Azure Storage Connection string not found');
-}
-
 let containerClient;
 
 async function main() {
+  const AZURE_STORAGE_CONNECTION_STRING = 
+  process.env.AZURE_STORAGE_CONNECTION_STRING;
+
+  if (!AZURE_STORAGE_CONNECTION_STRING) {
+    throw Error('Azure Storage Connection string not found');
+  }
+
   const blobServiceClient = BlobServiceClient.fromConnectionString(
     AZURE_STORAGE_CONNECTION_STRING
   );
   containerClient = await blobServiceClient.getContainerClient('code');
+
+  const MONGODB_CONNECTION_STRING = 
+  process.env.MONGODB_CONNECTION_STRING;
+
+  if (!MONGODB_CONNECTION_STRING) {
+    throw Error('MONGODB Connection string not found');
+  }
+
+  await mongoose.connect('mongodb+srv://admin:admin@cluster0.yykeetl.mongodb.net/?retryWrites=true&w=majority');
 }
 main();
+
+const submission_schema = new mongoose.Schema({
+  _id: String,
+  tic_tac_toe: { type: Array, default: [] },
+  mega_tic_tac_toe: { type: Array, default: [] },
+  competing_factories: { type: Array, default: [] }
+});
+
+const Submission = mongoose.model('Submission', submission_schema);
 
 
 // user authentication stuff
@@ -100,6 +118,12 @@ let event_end;
 let participants;
 let participants_set
 
+async function update_database(participants) {
+  for (participant of participants) {
+    await Submission.findByIdAndUpdate(participant, { _id: participant }, { upsert: true }).exec();
+  }
+}
+
 function update_settings(settings) {
 
   function get_participants(encrypted_participants) {
@@ -110,6 +134,7 @@ function update_settings(settings) {
   event_end = new Date(settings.event_end);
   participants = get_participants(settings.participants);
   participants_set = new Set(participants);
+  update_database(participants);
 }
 
 update_settings(require('./site_settings.json'));
@@ -168,6 +193,9 @@ app.post('/submit_code', async (req, res) => {
 
   const public_url = blockBlobClient.url;
 
+  const email = JSON.parse(req.cookies['credentials']).email;
+
+
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({ public_url }));
 });
@@ -194,6 +222,17 @@ app.get('/data/username', (req, res) => {
   }
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({ email }));
+});
+app.get('/data/uploaded-file/tic-tac-toe', (req, res) => {
+
+  const email = JSON.parse(req.cookies['credentials']).email;
+
+  upload_time = '';
+  file_name = '';
+  language = '';
+
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify({ upload_time, file_name, language }));
 });
 
 
