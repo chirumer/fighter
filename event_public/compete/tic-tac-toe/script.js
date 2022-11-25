@@ -36,6 +36,8 @@ $('#upload-form').submit(async function(e){
 
   const data = await response.json();
 
+  $('#submission_file').val('');
+
   $('#uploaded-file-time').text(form_data.get('upload_time'));
   $('#uploaded-file-language').text(form_data.get('language'));
   $('#uploaded-file-name').prop("href", data.public_url);
