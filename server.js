@@ -15,9 +15,6 @@ require('dotenv').config()
 // express app
 const app = express();
 
-// parse json & url-encoded data
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 // parse form data
 app.use(formidableMiddleware());
 
@@ -65,7 +62,7 @@ const Submission = mongoose.model('Submission', submission_schema);
 app.use(cookie_parser());
 
 app.post('/authenticate', (req, res) => {
-  const data = req.body;
+  const data = req.fields;
 
   console.log('entered');
 
