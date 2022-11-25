@@ -194,12 +194,16 @@ app.post('/submit_code', async (req, res) => {
   const public_url = blockBlobClient.url;
 
   const email = JSON.parse(req.cookies['credentials']).email;
+  const data = await Submission.findOne({ _id: email }).exec();
 
   const upload_time = req.fields['upload_time'];
   const file_name = req.fields['file_name'];
   const language = req.fields['language'];
   const db_data = { upload_time, file_name, language, public_url };
-  console.log(db_data);
+
+  const game_name = req.fields['game_name'];
+  data[game_name].push(db_data);
+  await data.save();
 
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({ public_url }));
