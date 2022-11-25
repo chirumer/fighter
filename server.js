@@ -64,8 +64,6 @@ app.use(cookie_parser());
 app.post('/authenticate', (req, res) => {
   const data = req.fields;
 
-  console.log('entered');
-
   res.setHeader('Content-Type', 'application/json');
 
   if (!participants_set.has(data.email)) {
@@ -237,9 +235,6 @@ app.get('/data/uploaded-file/:game_name', async (req, res) => {
 
   const email = JSON.parse(req.cookies['credentials']).email;
   const data = await Submission.findOne({ _id: email }).exec();
-
-  console.log('data', data);
-  console.log(game_name);
   
   if (!data[game_name].length) {
     upload_time = '';
