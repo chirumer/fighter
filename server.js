@@ -47,7 +47,7 @@ async function main() {
     throw Error('MONGODB Connection string not found');
   }
 
-  await mongoose.connect('mongodb+srv://admin:admin@cluster0.yykeetl.mongodb.net/?retryWrites=true&w=majority');
+  await mongoose.connect(MONGODB_CONNECTION_STRING);
 }
 main();
 
@@ -66,6 +66,8 @@ app.use(cookie_parser());
 
 app.post('/authenticate', (req, res) => {
   const data = req.body;
+
+  console.log('entered');
 
   res.setHeader('Content-Type', 'application/json');
 
